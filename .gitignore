@@ -1,0 +1,11 @@
+# Binaries
+hax-plugin-slack
+*.exe
+
+# Build
+dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp

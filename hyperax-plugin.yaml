@@ -1,0 +1,65 @@
+name: slack
+version: "0.1.0"
+description: "Bi-directional Slack communication via Web API and Events API with channel monitoring"
+author: "Runtime Dynamics"
+license: "Apache-2.0"
+type: service
+entrypoint: hax-plugin-slack
+api_version: "1"
+min_hyperax_version: "1.0.0"
+integration: channel
+
+variables:
+  - name: SLACK_BOT_TOKEN
+    type: string
+    required: true
+    secret: true
+    description: "Slack bot OAuth token (xoxb-...)"
+  - name: SLACK_APP_TOKEN
+    type: string
+    required: false
+    secret: true
+    description: "Slack app-level token for Socket Mode (xapp-...)"
+  - name: SLACK_CHANNELS
+    type: array_string
+    required: false
+    dynamic: true
+    default: []
+    description: "Slack channel IDs to monitor"
+
+tools:
+  - name: send_message
+    description: "Send a message to a Slack channel"
+    parameters:
+      - name: channel
+        type: string
+        required: true
+        description: "Channel ID"
+      - name: text
+        type: string
+        required: true
+        description: "Message text"
+  - name: read_history
+    description: "Read recent messages from a Slack channel"
+    parameters:
+      - name: channel
+        type: string
+        required: true
+        description: "Channel ID"
+      - name: limit
+        type: integer
+        required: false
+        default: 20
+        description: "Number of messages"
+  - name: list_channels
+    description: "List available Slack channels"
+    parameters: []
+  - name: poll_channels
+    description: "Poll monitored channels for new messages"
+    parameters: []
+
+artifacts:
+  darwin/arm64: hax-plugin-slack-darwin-arm64.tar.gz
+  darwin/amd64: hax-plugin-slack-darwin-amd64.tar.gz
+  linux/amd64: hax-plugin-slack-linux-amd64.tar.gz
+  linux/arm64: hax-plugin-slack-linux-arm64.tar.gz
